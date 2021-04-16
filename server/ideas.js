@@ -7,6 +7,7 @@ const {
     updateInstanceInDatabase,
     deleteFromDatabasebyId,
 } = require("./db");
+const checkMillionDollarIdea = require("./checkMillionDollarIdea");
 
 module.exports = ideaRouter;
 ideaRouter.param("ideaId", (req, res, next, ideaId) => {
@@ -22,7 +23,7 @@ ideaRouter.get("/", (req, res) => {
     res.status(200).send(getAllFromDatabase("ideas"));
 });
 
-ideaRouter.post("/", (req, res) => {
+ideaRouter.post("/", checkMillionDollarIdea, (req, res) => {
     const newIdea = addToDatabase("ideas", req.body);
     res.status(201).send(newIdea);
 });
@@ -31,7 +32,7 @@ ideaRouter.get("/:ideaId", (req, res) => {
     res.status(200).send(req.idea);
 });
 
-ideaRouter.put("/:ideaId", (req, res) => {
+ideaRouter.put("/:ideaId", checkMillionDollarIdea, (req, res) => {
     let updatedInstance = updateInstanceInDatabase("ideas", req.body);
     res.status(200).send(updatedInstance);
 });

@@ -16,21 +16,8 @@ minionRouter.get("/", (req, res) => {
 });
 
 minionRouter.post("/", (req, res) => {
-    const { name, title, salary } = req.body;
-    if (name && title && salary) {
-        const newMinion = addToDatabase("minions", {
-            name: name,
-            title: title,
-            salary: Number(salary),
-        });
-        if (newMinion) {
-            res.status(201).send(newMinion);
-        } else {
-            res.status(400).send();
-        }
-    } else {
-        res.status(400).send();
-    }
+    const newMinion = addToDatabase("minions", req.body);
+    res.status(201).send(newMinion);
 });
 
 minionRouter.get("/:minionId", (req, res) => {
@@ -38,7 +25,7 @@ minionRouter.get("/:minionId", (req, res) => {
     if (retreivedMinion) {
         res.status(200).send(retreivedMinion);
     } else {
-        res.status(400).send();
+        res.status(404).send();
     }
 });
 
@@ -56,17 +43,17 @@ minionRouter.put("/:minionId", (req, res) => {
         if (updatedMinion) {
             res.status(200).send(updatedMinion);
         } else {
-            res.status(400).send();
+            res.status(404).send();
         }
     } else {
-        res.status(400).send();
+        res.status(404).send();
     }
 });
 
 minionRouter.delete("/:minionId", (req, res) => {
     if (deleteFromDatabasebyId("minions", req.params.minionId)) {
-        res.status(410).send();
+        res.status(204).send();
     } else {
-        res.status(400).send();
+        res.status(404).send();
     }
 });

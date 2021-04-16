@@ -7,6 +7,7 @@ module.exports = app;
 /* Do not change the following line! It is required for testing and allowing
  *  the frontend application to interact as planned with the api server
  */
+// eslint-disable-next-line no-undef
 const PORT = process.env.PORT || 4001;
 
 // Add middleware for handling CORS requests from index.html

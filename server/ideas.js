@@ -9,7 +9,15 @@ const {
 } = require("./db");
 
 module.exports = ideaRouter;
-
+ideaRouter.param("ideaId", (req, res, next, ideaId) => {
+    const retreivedIdea = getFromDatabaseById("ideas", ideaId);
+    if (retreivedIdea) {
+        req.idea = retreivedIdea;
+        next();
+    } else {
+        res.status(404).send();
+    }
+});
 ideaRouter.get("/", (req, res) => {
     res.status(200).send(getAllFromDatabase("ideas"));
 });
@@ -20,12 +28,7 @@ ideaRouter.post("/", (req, res) => {
 });
 
 ideaRouter.get("/:ideaId", (req, res) => {
-    const retreivedIdea = getFromDatabaseById("ideas", req.params.ideaId);
-    if (retreivedIdea) {
-        res.status(200).send(retreivedIdea);
-    } else {
-        res.status(404).send();
-    }
+    res.status(200).send(req.idea);
 });
 
 ideaRouter.put("/:ideaId", (req, res) => {
